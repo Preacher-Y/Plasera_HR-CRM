@@ -1,0 +1,150 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL_UNPOOLED")
+}
+
+enum UserRole {
+  ADMIN
+  VIEWER
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String?
+  role      UserRole @default(VIEWER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum EmploymentStatus {
+  ACTIVE
+  INACTIVE
+  TERMINATED
+}
+
+enum LeaveType {
+  ANNUAL
+  SICK
+  PERSONAL
+  MATERNITY
+  PATERNITY
+  UNPAID
+  OTHER
+}
+
+enum LeaveStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum HistoryEventType {
+  JOINED
+  JOB_TITLE_CHANGED
+  DEPARTMENT_CHANGED
+  MANAGER_CHANGED
+  DEACTIVATED
+  REACTIVATED
+}
+
+enum ActivityAction {
+  EMPLOYEE_CREATED
+  EMPLOYEE_UPDATED
+  EMPLOYEE_DEACTIVATED
+  DEPARTMENT_CREATED
+  DEPARTMENT_UPDATED
+  DEPARTMENT_DELETED
+  LEAVE_SUBMITTED
+  LEAVE_APPROVED
+  LEAVE_REJECTED
+}
+
+model Department {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  code        String?   @unique
+  description String?
+  headId      String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  head      Employee?  @relation("DepartmentHead", fields: [headId], references: [id])
+  employees Employee[] @relation("EmployeeDepartment")
+}
+
+model Employee {
+  id               String           @id @default(cuid())
+  employeeNumber   String           @unique
+  firstName        String
+  lastName         String
+  email            String           @unique
+  phone            String?
+  jobTitle         String
+  profileImage     String?
+  location         String?
+  employmentStatus EmploymentStatus @default(ACTIVE)
+  dateJoined       DateTime
+  departmentId     String
+  managerId        String?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  deactivatedAt    DateTime?
+
+  department   Department          @relation("EmployeeDepartment", fields: [departmentId], references: [id])
+  manager      Employee?           @relation("ManagerSubordinates", fields: [managerId], references: [id])
+  subordinates Employee[]          @relation("ManagerSubordinates")
+  leaveRequests LeaveRequest[]     @relation("EmployeeLeave")
+  reviewedLeave LeaveRequest[]     @relation("ReviewerLeave")
+  history       EmploymentHistory[]
+  activityLogs  ActivityLog[]
+  headOfDept    Department[]       @relation("DepartmentHead")
+}
+
+model LeaveRequest {
+  id            String      @id @default(cuid())
+  employeeId    String
+  leaveType     LeaveType
+  startDate     DateTime
+  endDate       DateTime
+  reason        String
+  status        LeaveStatus @default(PENDING)
+  reviewComment String?
+  reviewedById  String?
+  reviewedAt    DateTime?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  employee   Employee  @relation("EmployeeLeave", fields: [employeeId], references: [id])
+  reviewedBy Employee? @relation("ReviewerLeave", fields: [reviewedById], references: [id])
+}
+
+model EmploymentHistory {
+  id            String           @id @default(cuid())
+  employeeId    String
+  eventType     HistoryEventType
+  title         String
+  description   String?
+  effectiveDate DateTime
+  createdAt     DateTime         @default(now())
+
+  employee Employee @relation(fields: [employeeId], references: [id])
+}
+
+model ActivityLog {
+  id          String         @id @default(cuid())
+  action      ActivityAction
+  entityType  String
+  entityId    String
+  employeeId  String?
+  description String
+  createdAt   DateTime       @default(now())
+
+  employee Employee? @relation(fields: [employeeId], references: [id])
+}
