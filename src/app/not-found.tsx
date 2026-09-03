@@ -1,16 +1,42 @@
+import Image from "next/image";
 import Link from "next/link";
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
 export default function NotFound() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-4 text-center px-4">
-      <p className="text-6xl font-bold text-emerald-600">404</p>
-      <h1 className="text-2xl font-bold text-slate-900">Page not found</h1>
-      <p className="text-slate-500 max-w-sm">
-        The page you are looking for doesn&apos;t exist or has been moved.
+    <div className="min-h-screen bg-white flex flex-col items-center justify-center px-6 py-16 text-center">
+
+      {/* Illustration */}
+      <div className="w-full max-w-md lg:max-w-lg xl:max-w-xl mb-8 lg:mb-10">
+        <Image
+          src="/errorIllustration.svg"
+          alt="404 - Page not found"
+          width={702}
+          height={427}
+          style={{ width: "100%", height: "auto" }}
+        />
+      </div>
+
+      {/* Heading */}
+      <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 leading-tight font-asul">
+        Page Not Found
+      </h1>
+
+      {/* Subtext */}
+      <p className="mt-4 text-gray-400 text-sm lg:text-base max-w-sm font-montserrat">
+        The page you&apos;re looking for doesn&apos;t exist or has been moved.
       </p>
-      <Link href="/dashboard" className={cn(buttonVariants(), "bg-emerald-600 hover:bg-emerald-700")}>
+
+      {/* Button */}
+      <Link
+        href="/dashboard"
+        className="
+          mt-8 inline-flex items-center justify-center
+          px-8 py-3 rounded-full
+          text-white text-sm lg:text-base font-semibold
+          bg-login-button hover:bg-login-button-hover
+          transition-colors font-montserrat
+        "
+      >
         Back to Dashboard
       </Link>
     </div>
