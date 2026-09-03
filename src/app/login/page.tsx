@@ -5,10 +5,8 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Loader2, ShieldCheck } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
+import LoginIllustration from "@/components/login/LoginIllustration";
 
 const schema = z.object({
   email:    z.string().min(1, "Email is required").email("Enter a valid email address"),
@@ -20,6 +18,7 @@ type FormValues = z.infer<typeof schema>;
 export default function LoginPage() {
   const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -29,97 +28,187 @@ export default function LoginPage() {
 
   async function onSubmit(values: FormValues) {
     setServerError(null);
-
     const res = await fetch("/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email: values.email, password: values.password }),
     });
-
     if (!res.ok) {
       setServerError("Invalid email or password. Please try again.");
       return;
     }
-
     router.push("/dashboard");
     router.refresh();
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-sm">
-        {/* Logo */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-emerald-600 mb-4">
-            <ShieldCheck className="h-6 w-6 text-white" />
-          </div>
-          <h1 className="text-2xl font-bold text-slate-900">PeopleCore</h1>
-          <p className="mt-1 text-sm text-slate-500">Sign in to your HR workspace</p>
+    <div className="h-screen overflow-hidden flex flex-col lg:flex-row bg-login-panel">
+
+      {/* ── LEFT PANEL (desktop/tablet) ── */}
+      <div className="hidden lg:flex lg:w-[40%] flex-col p-12 xl:p-14 2xl:p-16 3xl:p-20">
+
+        {/* HRM Logo */}
+        <div className="shrink-0">
+          <svg className="w-[53px] 2xl:w-[66px] 3xl:w-[80px] h-auto" viewBox="0 0 53 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0.59999 28.8C0.19999 28.8 -9.71556e-06 28.6534 -9.71556e-06 28.36C-9.71556e-06 28.12 0.173324 27.96 0.51999 27.88L1.43999 27.72C1.99999 27.6134 2.35999 27.4667 2.51999 27.28C2.70666 27.0934 2.79999 26.72 2.79999 26.16V2.64005C2.79999 2.08005 2.70666 1.70671 2.51999 1.52005C2.35999 1.33338 1.99999 1.18671 1.43999 1.08005L0.51999 0.920048C0.173324 0.840047 -9.71556e-06 0.680047 -9.71556e-06 0.440047C-9.71556e-06 0.146714 0.19999 4.76837e-05 0.59999 4.76837e-05H7.91999C8.31999 4.76837e-05 8.51999 0.160048 8.51999 0.480049C8.51999 0.720047 8.37332 0.866714 8.07999 0.920048L6.99999 1.08005C6.43999 1.16005 6.06666 1.30671 5.87999 1.52005C5.71999 1.73338 5.63999 2.12005 5.63999 2.68005V12.72C5.63999 13.0934 5.82666 13.28 6.19999 13.28H14.12C14.4933 13.28 14.68 13.0934 14.68 12.72V2.68005C14.68 2.12005 14.5867 1.73338 14.4 1.52005C14.24 1.30671 13.88 1.16005 13.32 1.08005L12.24 0.920048C11.9467 0.866714 11.8 0.720047 11.8 0.480049C11.8 0.160048 12 4.76837e-05 12.4 4.76837e-05H19.72C20.12 4.76837e-05 20.32 0.146714 20.32 0.440047C20.32 0.680047 20.1467 0.840047 19.8 0.920048L18.88 1.08005C18.32 1.18671 17.9467 1.33338 17.76 1.52005C17.6 1.70671 17.52 2.08005 17.52 2.64005V26.16C17.52 26.72 17.6 27.0934 17.76 27.28C17.9467 27.4667 18.32 27.6134 18.88 27.72L19.8 27.88C20.1467 27.96 20.32 28.12 20.32 28.36C20.32 28.6534 20.12 28.8 19.72 28.8H12.4C12 28.8 11.8 28.64 11.8 28.32C11.8 28.08 11.9467 27.9334 12.24 27.88L13.32 27.72C13.88 27.64 14.24 27.4934 14.4 27.28C14.5867 27.0667 14.68 26.68 14.68 26.12V15.04C14.68 14.6667 14.4933 14.48 14.12 14.48H6.19999C5.82666 14.48 5.63999 14.6667 5.63999 15.04V26.12C5.63999 26.68 5.71999 27.0667 5.87999 27.28C6.06666 27.4934 6.43999 27.64 6.99999 27.72L8.07999 27.88C8.37332 27.9334 8.51999 28.08 8.51999 28.32C8.51999 28.64 8.31999 28.8 7.91999 28.8H0.59999ZM31.4759 29.16C29.1559 29.16 27.6759 27.64 27.0359 24.6L26.1159 20.16C25.8226 18.72 25.4893 17.6267 25.1159 16.88C24.7693 16.1334 24.2759 15.6267 23.6359 15.36C23.0226 15.0934 22.1693 14.96 21.0759 14.96C20.7026 14.96 20.4093 15.0667 20.1959 15.28C19.9826 15.4667 19.8759 15.7067 19.8759 16V26C19.8759 26.56 19.9826 26.9467 20.1959 27.16C20.4093 27.3467 20.8893 27.5067 21.6359 27.64L23.1159 27.88C23.4093 27.9334 23.5559 28.08 23.5559 28.32C23.5559 28.64 23.3559 28.8 22.9559 28.8H14.8359C14.4359 28.8 14.2359 28.6534 14.2359 28.36C14.2359 28.12 14.4093 27.96 14.7559 27.88L15.6759 27.72C16.2359 27.6134 16.5959 27.4667 16.7559 27.28C16.9426 27.0934 17.0359 26.72 17.0359 26.16V2.64005C17.0359 2.08005 16.9426 1.70671 16.7559 1.52005C16.5959 1.33338 16.2359 1.18671 15.6759 1.08005L14.7559 0.920048C14.4093 0.840047 14.2359 0.680047 14.2359 0.440047C14.2359 0.146714 14.4359 4.76837e-05 14.8359 4.76837e-05H22.9559C24.5293 4.76837e-05 25.9293 0.306714 27.1559 0.920048C28.3826 1.53338 29.3426 2.38671 30.0359 3.48005C30.7293 4.54671 31.0759 5.78671 31.0759 7.20005C31.0759 8.88005 30.5693 10.4 29.5559 11.76C28.5426 13.0934 27.2626 14.04 25.7159 14.6C25.5293 14.6534 25.4226 14.7467 25.3959 14.88C25.3959 14.9867 25.4893 15.08 25.6759 15.16C26.5293 15.56 27.1959 16.12 27.6759 16.84C28.1826 17.56 28.5693 18.52 28.8359 19.72L29.7159 23.8C30.0093 25.1867 30.3559 26.1734 30.7559 26.76C31.1559 27.3467 31.6626 27.64 32.2759 27.64C32.4893 27.64 32.6759 27.6134 32.8359 27.56C33.0226 27.48 33.2493 27.3467 33.5159 27.16C33.7293 27.0267 33.9293 27 34.1159 27.08C34.3026 27.1334 34.3959 27.2667 34.3959 27.48C34.3959 27.9334 34.1026 28.3334 33.5159 28.68C32.9293 29 32.2493 29.16 31.4759 29.16ZM22.5559 13.96C24.3693 13.96 25.7426 13.36 26.6759 12.16C27.6093 10.9334 28.0759 9.30671 28.0759 7.28005C28.0759 5.30671 27.5293 3.77338 26.4359 2.68005C25.3693 1.56005 23.8893 1.00005 21.9959 1.00005C20.5826 1.00005 19.8759 1.53338 19.8759 2.60005V11.76C19.8759 13.2267 20.7693 13.96 22.5559 13.96ZM38.9837 28.4C38.8771 28.4 38.7571 28.36 38.6237 28.28C38.4904 28.2 38.3971 28.0267 38.3437 27.76L32.3037 3.24005C32.2771 3.05338 32.1971 2.97338 32.0637 3.00005C31.9304 3.00005 31.8637 3.09338 31.8637 3.28005L31.0637 25.36C31.0371 26.1067 31.1571 26.68 31.4237 27.08C31.6904 27.4534 32.1571 27.6934 32.8237 27.8L33.3437 27.88C33.6904 27.9067 33.8637 28.0667 33.8637 28.36C33.8637 28.6534 33.6637 28.8 33.2637 28.8H27.5437C27.1437 28.8 26.9437 28.6534 26.9437 28.36C26.9437 28.0667 27.1171 27.9067 27.4637 27.88L27.9837 27.8C28.6771 27.6934 29.1437 27.4534 29.3837 27.08C29.6504 26.68 29.7971 26.1067 29.8237 25.36L30.6237 2.64005C30.6504 2.08005 30.5704 1.70671 30.3837 1.52005C30.1971 1.33338 29.7971 1.18671 29.1837 1.08005L28.2637 0.920048C27.9171 0.840047 27.7437 0.680047 27.7437 0.440047C27.7437 0.146714 27.9437 4.76837e-05 28.3437 4.76837e-05H33.1437C33.9704 4.76837e-05 34.4771 0.400047 34.6637 1.20005L39.5037 21.16C39.5571 21.3467 39.6371 21.44 39.7437 21.44C39.8771 21.44 39.9571 21.3467 39.9837 21.16L45.0237 1.00005C45.1837 0.333381 45.6104 4.76837e-05 46.3037 4.76837e-05H51.0237C51.4237 4.76837e-05 51.6237 0.146714 51.6237 0.440047C51.6237 0.680047 51.4504 0.840047 51.1037 0.920048L50.1837 1.08005C49.6237 1.18671 49.2504 1.33338 49.0637 1.52005C48.8771 1.70671 48.7971 2.08005 48.8237 2.64005L49.6237 26.16C49.6504 26.72 49.7437 27.0934 49.9037 27.28C50.0637 27.4667 50.4237 27.6134 50.9837 27.72L51.9037 27.88C52.2504 27.96 52.4237 28.12 52.4237 28.36C52.4237 28.6534 52.2237 28.8 51.8237 28.8H44.5837C44.1837 28.8 43.9837 28.6534 43.9837 28.36C43.9837 28.12 44.1571 27.96 44.5037 27.88L45.4237 27.72C45.9837 27.6134 46.3571 27.4667 46.5437 27.28C46.7304 27.0934 46.8104 26.72 46.7837 26.16L46.1037 3.28005C46.1037 3.09338 46.0371 3.00005 45.9037 3.00005C45.7971 2.97338 45.7171 3.04005 45.6637 3.20005L39.5837 27.76C39.5304 28.0267 39.4371 28.2 39.3037 28.28C39.1971 28.36 39.0904 28.4 38.9837 28.4Z" fill="white"/>
+          </svg>
         </div>
 
-        {/* Card */}
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-8">
-          <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-5">
+        {/* Heading */}
+        <div className="mt-6 lg:mt-10">
+          <h1 className="text-white text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl 3xl:text-9xl leading-[1.05] font-normal font-asul">
+            HR<br />Management<br />System
+          </h1>
+        </div>
+
+        {/* Illustration — bleeds ~15% into right white panel */}
+        <div className="flex-1 relative mt-6 min-h-0">
+          <div className="absolute -bottom-6 left-0 right-[-30%] 2xl:right-[-45%] flex items-end">
+            <LoginIllustration />
+          </div>
+        </div>
+      </div>
+
+      {/* ── MOBILE HEADER (phone only) ── */}
+      <div className="lg:hidden flex flex-col items-center justify-center px-6 pt-10 pb-8 sm:px-10 md:pt-16 md:pb-12 h-48 md:h-64">
+        <svg className="w-[65px] md:w-[90px] h-auto" viewBox="0 0 53 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0.59999 28.8C0.19999 28.8 -9.71556e-06 28.6534 -9.71556e-06 28.36C-9.71556e-06 28.12 0.173324 27.96 0.51999 27.88L1.43999 27.72C1.99999 27.6134 2.35999 27.4667 2.51999 27.28C2.70666 27.0934 2.79999 26.72 2.79999 26.16V2.64005C2.79999 2.08005 2.70666 1.70671 2.51999 1.52005C2.35999 1.33338 1.99999 1.18671 1.43999 1.08005L0.51999 0.920048C0.173324 0.840047 -9.71556e-06 0.680047 -9.71556e-06 0.440047C-9.71556e-06 0.146714 0.19999 4.76837e-05 0.59999 4.76837e-05H7.91999C8.31999 4.76837e-05 8.51999 0.160048 8.51999 0.480049C8.51999 0.720047 8.37332 0.866714 8.07999 0.920048L6.99999 1.08005C6.43999 1.16005 6.06666 1.30671 5.87999 1.52005C5.71999 1.73338 5.63999 2.12005 5.63999 2.68005V12.72C5.63999 13.0934 5.82666 13.28 6.19999 13.28H14.12C14.4933 13.28 14.68 13.0934 14.68 12.72V2.68005C14.68 2.12005 14.5867 1.73338 14.4 1.52005C14.24 1.30671 13.88 1.16005 13.32 1.08005L12.24 0.920048C11.9467 0.866714 11.8 0.720047 11.8 0.480049C11.8 0.160048 12 4.76837e-05 12.4 4.76837e-05H19.72C20.12 4.76837e-05 20.32 0.146714 20.32 0.440047C20.32 0.680047 20.1467 0.840047 19.8 0.920048L18.88 1.08005C18.32 1.18671 17.9467 1.33338 17.76 1.52005C17.6 1.70671 17.52 2.08005 17.52 2.64005V26.16C17.52 26.72 17.6 27.0934 17.76 27.28C17.9467 27.4667 18.32 27.6134 18.88 27.72L19.8 27.88C20.1467 27.96 20.32 28.12 20.32 28.36C20.32 28.6534 20.12 28.8 19.72 28.8H12.4C12 28.8 11.8 28.64 11.8 28.32C11.8 28.08 11.9467 27.9334 12.24 27.88L13.32 27.72C13.88 27.64 14.24 27.4934 14.4 27.28C14.5867 27.0667 14.68 26.68 14.68 26.12V15.04C14.68 14.6667 14.4933 14.48 14.12 14.48H6.19999C5.82666 14.48 5.63999 14.6667 5.63999 15.04V26.12C5.63999 26.68 5.71999 27.0667 5.87999 27.28C6.06666 27.4934 6.43999 27.64 6.99999 27.72L8.07999 27.88C8.37332 27.9334 8.51999 28.08 8.51999 28.32C8.51999 28.64 8.31999 28.8 7.91999 28.8H0.59999ZM31.4759 29.16C29.1559 29.16 27.6759 27.64 27.0359 24.6L26.1159 20.16C25.8226 18.72 25.4893 17.6267 25.1159 16.88C24.7693 16.1334 24.2759 15.6267 23.6359 15.36C23.0226 15.0934 22.1693 14.96 21.0759 14.96C20.7026 14.96 20.4093 15.0667 20.1959 15.28C19.9826 15.4667 19.8759 15.7067 19.8759 16V26C19.8759 26.56 19.9826 26.9467 20.1959 27.16C20.4093 27.3467 20.8893 27.5067 21.6359 27.64L23.1159 27.88C23.4093 27.9334 23.5559 28.08 23.5559 28.32C23.5559 28.64 23.3559 28.8 22.9559 28.8H14.8359C14.4359 28.8 14.2359 28.6534 14.2359 28.36C14.2359 28.12 14.4093 27.96 14.7559 27.88L15.6759 27.72C16.2359 27.6134 16.5959 27.4667 16.7559 27.28C16.9426 27.0934 17.0359 26.72 17.0359 26.16V2.64005C17.0359 2.08005 16.9426 1.70671 16.7559 1.52005C16.5959 1.33338 16.2359 1.18671 15.6759 1.08005L14.7559 0.920048C14.4093 0.840047 14.2359 0.680047 14.2359 0.440047C14.2359 0.146714 14.4359 4.76837e-05 14.8359 4.76837e-05H22.9559C24.5293 4.76837e-05 25.9293 0.306714 27.1559 0.920048C28.3826 1.53338 29.3426 2.38671 30.0359 3.48005C30.7293 4.54671 31.0759 5.78671 31.0759 7.20005C31.0759 8.88005 30.5693 10.4 29.5559 11.76C28.5426 13.0934 27.2626 14.04 25.7159 14.6C25.5293 14.6534 25.4226 14.7467 25.3959 14.88C25.3959 14.9867 25.4893 15.08 25.6759 15.16C26.5293 15.56 27.1959 16.12 27.6759 16.84C28.1826 17.56 28.5693 18.52 28.8359 19.72L29.7159 23.8C30.0093 25.1867 30.3559 26.1734 30.7559 26.76C31.1559 27.3467 31.6626 27.64 32.2759 27.64C32.4893 27.64 32.6759 27.6134 32.8359 27.56C33.0226 27.48 33.2493 27.3467 33.5159 27.16C33.7293 27.0267 33.9293 27 34.1159 27.08C34.3026 27.1334 34.3959 27.2667 34.3959 27.48C34.3959 27.9334 34.1026 28.3334 33.5159 28.68C32.9293 29 32.2493 29.16 31.4759 29.16ZM22.5559 13.96C24.3693 13.96 25.7426 13.36 26.6759 12.16C27.6093 10.9334 28.0759 9.30671 28.0759 7.28005C28.0759 5.30671 27.5293 3.77338 26.4359 2.68005C25.3693 1.56005 23.8893 1.00005 21.9959 1.00005C20.5826 1.00005 19.8759 1.53338 19.8759 2.60005V11.76C19.8759 13.2267 20.7693 13.96 22.5559 13.96ZM38.9837 28.4C38.8771 28.4 38.7571 28.36 38.6237 28.28C38.4904 28.2 38.3971 28.0267 38.3437 27.76L32.3037 3.24005C32.2771 3.05338 32.1971 2.97338 32.0637 3.00005C31.9304 3.00005 31.8637 3.09338 31.8637 3.28005L31.0637 25.36C31.0371 26.1067 31.1571 26.68 31.4237 27.08C31.6904 27.4534 32.1571 27.6934 32.8237 27.8L33.3437 27.88C33.6904 27.9067 33.8637 28.0667 33.8637 28.36C33.8637 28.6534 33.6637 28.8 33.2637 28.8H27.5437C27.1437 28.8 26.9437 28.6534 26.9437 28.36C26.9437 28.0667 27.1171 27.9067 27.4637 27.88L27.9837 27.8C28.6771 27.6934 29.1437 27.4534 29.3837 27.08C29.6504 26.68 29.7971 26.1067 29.8237 25.36L30.6237 2.64005C30.6504 2.08005 30.5704 1.70671 30.3837 1.52005C30.1971 1.33338 29.7971 1.18671 29.1837 1.08005L28.2637 0.920048C27.9171 0.840047 27.7437 0.680047 27.7437 0.440047C27.7437 0.146714 27.9437 4.76837e-05 28.3437 4.76837e-05H33.1437C33.9704 4.76837e-05 34.4771 0.400047 34.6637 1.20005L39.5037 21.16C39.5571 21.3467 39.6371 21.44 39.7437 21.44C39.8771 21.44 39.9571 21.3467 39.9837 21.16L45.0237 1.00005C45.1837 0.333381 45.6104 4.76837e-05 46.3037 4.76837e-05H51.0237C51.4237 4.76837e-05 51.6237 0.146714 51.6237 0.440047C51.6237 0.680047 51.4504 0.840047 51.1037 0.920048L50.1837 1.08005C49.6237 1.18671 49.2504 1.33338 49.0637 1.52005C48.8771 1.70671 48.7971 2.08005 48.8237 2.64005L49.6237 26.16C49.6504 26.72 49.7437 27.0934 49.9037 27.28C50.0637 27.4667 50.4237 27.6134 50.9837 27.72L51.9037 27.88C52.2504 27.96 52.4237 28.12 52.4237 28.36C52.4237 28.6534 52.2237 28.8 51.8237 28.8H44.5837C44.1837 28.8 43.9837 28.6534 43.9837 28.36C43.9837 28.12 44.1571 27.96 44.5037 27.88L45.4237 27.72C45.9837 27.6134 46.3571 27.4667 46.5437 27.28C46.7304 27.0934 46.8104 26.72 46.7837 26.16L46.1037 3.28005C46.1037 3.09338 46.0371 3.00005 45.9037 3.00005C45.7971 2.97338 45.7171 3.04005 45.6637 3.20005L39.5837 27.76C39.5304 28.0267 39.4371 28.2 39.3037 28.28C39.1971 28.36 39.0904 28.4 38.9837 28.4Z" fill="white"/>
+        </svg>
+      </div>
+
+      {/* ── RIGHT PANEL (white form) ── */}
+      <div
+        className="
+          flex-1 lg:w-[60%] bg-white
+          flex flex-col items-center justify-center
+          min-h-[72vh] lg:min-h-screen
+          px-6 py-10 sm:px-10 md:px-20 lg:px-16 2xl:px-24 3xl:px-32
+          rounded-t-[56px] lg:rounded-t-none lg:rounded-tl-[72px]
+          shadow-2xl lg:shadow-none
+        "
+      >
+        <div className="w-full max-w-sm md:max-w-md lg:max-w-sm 2xl:max-w-lg 3xl:max-w-xl">
+
+          {/* Form header */}
+          <div className="text-center mb-8 lg:mb-10 2xl:mb-12">
+            <h2 className="text-gray-900 text-3xl md:text-4xl lg:text-4xl 2xl:text-5xl 3xl:text-6xl font-bold font-asul">
+              Welcome Back
+            </h2>
+            <p className="mt-2 lg:mt-3 2xl:mt-4 text-gray-400 text-sm lg:text-base 2xl:text-lg font-montserrat">
+              Login to continue to&nbsp;the HRM
+            </p>
+          </div>
+
+          <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-5 lg:space-y-6 2xl:space-y-7">
+
             {/* Server error */}
             {serverError && (
-              <div className="rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
+              <div className="rounded-2xl bg-red-50 border border-red-200 px-4 py-3 text-sm 2xl:text-base text-red-700 font-montserrat">
                 {serverError}
               </div>
             )}
 
             {/* Email */}
-            <div className="space-y-1.5">
-              <Label htmlFor="email">Email address</Label>
-              <Input
+            <div className="space-y-2">
+              <label
+                htmlFor="email"
+                className="block text-sm lg:text-base 2xl:text-lg font-semibold text-gray-800 font-montserrat pl-6"
+              >
+                Email
+              </label>
+              <input
                 id="email"
                 type="email"
                 autoComplete="email"
-                placeholder="admin@example.com"
+                placeholder="john@example.com"
                 aria-invalid={!!errors.email}
+                className="
+                  w-full px-8 py-3 lg:py-3.5 2xl:py-4
+                  rounded-full border border-gray-300
+                  text-sm lg:text-base 2xl:text-lg text-gray-700 italic placeholder:text-gray-400 placeholder:not-italic
+                  focus:outline-none focus:ring-2 focus:ring-login-panel focus:border-transparent
+                  transition font-montserrat
+                "
                 {...register("email")}
               />
               {errors.email && (
-                <p className="text-xs text-red-600">{errors.email.message}</p>
+                <p className="text-xs lg:text-sm text-red-600 pl-1 font-montserrat">
+                  {errors.email.message}
+                </p>
               )}
             </div>
 
             {/* Password */}
-            <div className="space-y-1.5">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                autoComplete="current-password"
-                placeholder="••••••••"
-                aria-invalid={!!errors.password}
-                {...register("password")}
-              />
+            <div className="space-y-2">
+              <label
+                htmlFor="password"
+                className="block text-sm lg:text-base 2xl:text-lg font-semibold text-gray-800 font-montserrat pl-6"
+              >
+                Password
+              </label>
+              <div className="relative">
+                <input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  autoComplete="current-password"
+                  placeholder="· · · · · · · · · · ·"
+                  aria-invalid={!!errors.password}
+                  className="
+                    w-full px-8 py-3 lg:py-3.5 2xl:py-4 pr-14
+                    rounded-full border border-gray-300
+                    text-sm lg:text-base 2xl:text-lg text-gray-700 placeholder:text-gray-400 placeholder:tracking-widest
+                    focus:outline-none focus:ring-2 focus:ring-login-panel focus:border-transparent
+                    transition font-montserrat
+                  "
+                  {...register("password")}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((v) => !v)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors p-1"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword
+                    ? <Eye className="h-5 w-5 2xl:h-6 2xl:w-6" />
+                    : <EyeOff className="h-5 w-5 2xl:h-6 2xl:w-6" />
+                  }
+                </button>
+              </div>
               {errors.password && (
-                <p className="text-xs text-red-600">{errors.password.message}</p>
+                <p className="text-xs lg:text-sm text-red-600 pl-1 font-montserrat">
+                  {errors.password.message}
+                </p>
               )}
             </div>
 
             {/* Submit */}
-            <Button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
-            >
-              {isSubmitting ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Signing in…
-                </>
-              ) : (
-                "Sign in"
-              )}
-            </Button>
+            <div className="pt-2">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="
+                  w-full py-3.5 lg:py-4 2xl:py-5
+                  rounded-full text-white text-sm lg:text-base 2xl:text-lg font-semibold
+                  flex items-center justify-center gap-2
+                  bg-login-button hover:bg-login-button-hover
+                  transition-colors active:scale-[0.98]
+                  disabled:opacity-70 disabled:cursor-not-allowed
+                  font-montserrat
+                "
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Logging in…
+                  </>
+                ) : (
+                  "Login"
+                )}
+              </button>
+            </div>
+
           </form>
         </div>
-
-        <p className="mt-6 text-center text-xs text-slate-400">
-          PeopleCore · HR Management System
-        </p>
       </div>
     </div>
   );

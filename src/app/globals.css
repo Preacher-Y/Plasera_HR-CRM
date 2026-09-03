@@ -129,3 +129,12 @@
     @apply font-sans;
   }
 }
+
+@theme {
+  --breakpoint-3xl: 1920px;
+  --color-login-panel: #3B84C4;
+  --color-login-button: #1B5CA5;
+  --color-login-button-hover: #164d8e;
+  --font-asul: var(--font-asul);
+  --font-montserrat: var(--font-montserrat);
+}
