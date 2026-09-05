@@ -13,7 +13,7 @@ export function DepartmentChart({ data }: DepartmentChartProps) {
 
   return (
     <ResponsiveContainer width="100%" height={220}>
-      <BarChart data={data} layout="vertical" margin={{ left: 16, right: 16, top: 8, bottom: 8 }}>
+      <BarChart data={data} layout="vertical" margin={{ left: 16, right: 16, top: 8, bottom: 8 }} style={{ cursor: "default" }}>
         <XAxis type="number" tick={{ fontSize: 12 }} tickLine={false} axisLine={false} />
         <YAxis
           type="category"
@@ -28,7 +28,7 @@ export function DepartmentChart({ data }: DepartmentChartProps) {
           contentStyle={{ borderRadius: 8, border: "1px solid #e2e8f0", fontSize: 12 }}
           formatter={(value) => [`${String(value)} employees`, "Count"]}
         />
-        <Bar dataKey="employeeCount" radius={[0, 4, 4, 0]}>
+        <Bar dataKey="employeeCount" radius={[0, 4, 4, 0]} style={{ cursor: "default" }}>
           {data.map((_, i) => (
             <Cell key={i} fill={i === 0 ? "#3B84C4" : "#93c5fd"} />
           ))}
