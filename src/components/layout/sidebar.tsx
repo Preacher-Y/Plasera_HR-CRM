@@ -33,9 +33,13 @@ export function Sidebar() {
   return (
     <aside
       className={cn(
-        "flex flex-col shrink-0 bg-login-button-hover h-dvh overflow-hidden",
-        "transition-[width] duration-300 ease-in-out",
-        mobileOpen ? "w-[240px]" : "w-0",
+        "flex flex-col bg-login-button-hover overflow-hidden",
+        // Mobile/tablet: absolute so it doesn't affect content width
+        "absolute inset-y-0 left-0 z-20 w-[240px] h-full",
+        "transition-transform duration-300 ease-in-out",
+        mobileOpen ? "translate-x-0" : "-translate-x-full",
+        // Desktop: back in flex flow, width-based collapse, no translation
+        "lg:relative lg:translate-x-0 lg:transition-[width]",
         collapsed ? "lg:w-16" : "lg:w-[240px]",
       )}
     >
