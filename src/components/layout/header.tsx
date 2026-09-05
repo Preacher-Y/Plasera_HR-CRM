@@ -1,36 +1,42 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { LogOut } from "lucide-react";
-import { MobileNav } from "./mobile-nav";
-import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useSidebarContext } from "./sidebar-context";
 
-export function Header() {
-  const router = useRouter();
+interface HeaderProps {
+  userName: string;
+}
 
-  async function handleSignOut() {
-    await fetch("/api/auth/logout", { method: "POST" });
-    router.push("/login");
-    router.refresh();
-  }
+export function Header({ userName }: HeaderProps) {
+  const { collapsed, toggle } = useSidebarContext();
+
+  const initials = userName.slice(0, 2).toUpperCase();
 
   return (
-    <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-white px-4 sm:px-6">
-      <MobileNav />
+    <header className="sticky top-0 z-10 flex h-16 items-center gap-2 border-b bg-white px-4">
+      {/* Desktop sidebar toggle */}
+      <button
+        onClick={toggle}
+        aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+        className="hidden lg:flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 hover:text-slate-900 transition-colors"
+      >
+        {collapsed
+          ? <ChevronRight className="h-5 w-5" />
+          : <ChevronLeft className="h-5 w-5" />
+        }
+      </button>
+
       <div className="flex-1" />
-      <div className="flex items-center gap-3">
-        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-600 text-sm font-semibold text-white select-none">
-          HR
+
+      {/* Right side */}
+      <div className="flex items-center gap-2 mr-4 sm:mr-8 lg:mr-20">
+        <div className="h-6 w-px bg-slate-200 mx-1" />
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-login-button text-sm font-semibold text-white select-none">
+          {initials}
         </div>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={handleSignOut}
-          className="text-slate-500 hover:text-slate-900"
-          aria-label="Sign out"
-        >
-          <LogOut className="h-4 w-4" />
-        </Button>
+        <span className="hidden sm:block text-sm font-medium text-slate-700 max-w-[140px] truncate font-montserrat">
+          {userName}
+        </span>
       </div>
     </header>
   );
