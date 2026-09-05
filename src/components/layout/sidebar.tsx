@@ -1,8 +1,8 @@
 "use client";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { LayoutDashboard, Users, Building2, CalendarDays } from "lucide-react";
+import { LayoutDashboard, Users, Building2, CalendarDays, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSidebarContext } from "./sidebar-context";
 import { HrmLogo } from "@/components/ui/hrm-logo";
@@ -16,12 +16,19 @@ const navItems = [
 
 export function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
   const { collapsed, mobileOpen, closeMobile } = useSidebarContext();
 
   useEffect(() => {
     closeMobile();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
+
+  async function handleSignOut() {
+    await fetch("/api/auth/logout", { method: "POST" });
+    router.push("/login");
+    router.refresh();
+  }
 
   return (
     <aside
@@ -92,6 +99,27 @@ export function Sidebar() {
           );
         })}
       </nav>
+
+      {/* Logout at bottom */}
+      <div className="shrink-0 border-t border-white/15 px-2 py-4">
+        <button
+          onClick={handleSignOut}
+          title={collapsed ? "Logout" : undefined}
+          className="w-full flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium font-montserrat text-blue-100 hover:bg-login-button hover:text-white transition-colors"
+        >
+          <LogOut className="h-4 w-4 shrink-0" />
+          <span
+            className={cn(
+              "whitespace-nowrap transition-[opacity] duration-200",
+              collapsed
+                ? "lg:opacity-0 lg:pointer-events-none lg:w-0 lg:overflow-hidden opacity-100"
+                : "opacity-100"
+            )}
+          >
+            Logout
+          </span>
+        </button>
+      </div>
     </aside>
   );
 }
