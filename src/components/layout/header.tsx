@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Bell, ChevronLeft, ChevronRight, Menu, X } from "lucide-react";
 import { useSidebarContext } from "./sidebar-context";
 
 interface HeaderProps {
@@ -8,7 +8,7 @@ interface HeaderProps {
 }
 
 export function Header({ userName }: HeaderProps) {
-  const { collapsed, toggle } = useSidebarContext();
+  const { collapsed, toggle, mobileOpen, toggleMobile } = useSidebarContext();
 
   const initials = userName.slice(0, 2).toUpperCase();
 
@@ -23,6 +23,19 @@ export function Header({ userName }: HeaderProps) {
         {collapsed
           ? <ChevronRight className="h-5 w-5" />
           : <ChevronLeft className="h-5 w-5" />
+        }
+      </button>
+
+      {/* Mobile/tablet push sidebar toggle */}
+      <button
+        onClick={toggleMobile}
+        aria-label={mobileOpen ? "Close navigation" : "Open navigation"}
+        aria-expanded={mobileOpen}
+        className="lg:hidden h-9 w-9 flex items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 hover:text-slate-900 transition-colors"
+      >
+        {mobileOpen
+          ? <X className="h-5 w-5" />
+          : <Menu className="h-5 w-5" />
         }
       </button>
 
