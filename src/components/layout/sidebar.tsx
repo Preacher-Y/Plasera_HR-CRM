@@ -1,8 +1,11 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Users, Building2, CalendarDays, Settings } from "lucide-react";
+import { useEffect } from "react";
+import { LayoutDashboard, Users, Building2, CalendarDays } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useSidebarContext } from "./sidebar-context";
+import { HrmLogo } from "@/components/ui/hrm-logo";
 
 const navItems = [
   { href: "/dashboard",   label: "Dashboard",      icon: LayoutDashboard },
@@ -13,47 +16,82 @@ const navItems = [
 
 export function Sidebar() {
   const pathname = usePathname();
+  const { collapsed, mobileOpen, closeMobile } = useSidebarContext();
+
+  useEffect(() => {
+    closeMobile();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
 
   return (
-    <aside className="hidden lg:flex flex-col w-[240px] shrink-0 border-r bg-white min-h-screen">
-      <div className="flex h-16 items-center gap-2 border-b px-5">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-600">
-          <Users className="h-4 w-4 text-white" />
+    <aside
+      className={cn(
+        "flex flex-col shrink-0 bg-login-button-hover h-dvh overflow-hidden",
+        "transition-[width] duration-300 ease-in-out",
+        mobileOpen ? "w-[240px]" : "w-0",
+        collapsed ? "lg:w-16" : "lg:w-[240px]",
+      )}
+    >
+      {/* Logo */}
+      <div
+        className={cn(
+          "flex h-16 items-center border-b border-white/15 shrink-0",
+          collapsed ? "lg:justify-center lg:px-0 px-5 gap-3" : "gap-3 px-5"
+        )}
+      >
+        <HrmLogo className="h-[18px] w-auto shrink-0" />
+        <div
+          className={cn(
+            "flex flex-col leading-tight whitespace-nowrap transition-[opacity] duration-200",
+            collapsed
+              ? "lg:opacity-0 lg:pointer-events-none lg:w-0 lg:overflow-hidden opacity-100"
+              : "opacity-100"
+          )}
+        >
+          <span className="text-[13px] font-bold text-white font-asul leading-snug">
+            HR Management
+          </span>
+          <span className="text-[13px] font-bold text-white font-asul leading-snug">
+            System
+          </span>
         </div>
-        <span className="text-base font-bold text-slate-900">PeopleCore</span>
       </div>
 
-      <nav className="flex-1 space-y-1 px-3 py-4" aria-label="Main navigation">
+      {/* Nav — centered vertically, no scroll */}
+      <nav
+        className="flex-1 flex flex-col justify-center overflow-hidden px-2 py-4 space-y-0.5"
+        aria-label="Main navigation"
+      >
         {navItems.map(({ href, label, icon: Icon }) => {
           const active = pathname === href || pathname.startsWith(href + "/");
           return (
             <Link
               key={href}
               href={href}
+              title={collapsed ? label : undefined}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+                "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium font-montserrat transition-colors",
                 active
-                  ? "bg-emerald-600 text-white"
-                  : "text-slate-600 hover:bg-emerald-50 hover:text-emerald-700"
+                  ? "bg-login-panel text-white"
+                  : "text-blue-100 hover:bg-login-button hover:text-white"
               )}
             >
               <Icon className="h-4 w-4 shrink-0" />
-              {label}
+              <span
+                className={cn(
+                  "whitespace-nowrap transition-[opacity] duration-200",
+                  collapsed
+                    ? "lg:opacity-0 lg:pointer-events-none lg:w-0 lg:overflow-hidden opacity-100"
+                    : "opacity-100"
+                )}
+              >
+                {label}
+              </span>
             </Link>
           );
         })}
       </nav>
-
-      <div className="border-t px-3 py-4 space-y-1">
-        <Link
-          href="/settings"
-          className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100"
-        >
-          <Settings className="h-4 w-4" />
-          Settings
-        </Link>
-      </div>
     </aside>
   );
 }
