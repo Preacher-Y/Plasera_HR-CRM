@@ -24,13 +24,13 @@ export function DepartmentChart({ data }: DepartmentChartProps) {
           width={120}
         />
         <Tooltip
-          cursor={{ fill: "rgba(16,185,129,0.08)" }}
+          cursor={{ fill: "rgba(59,132,196,0.08)" }}
           contentStyle={{ borderRadius: 8, border: "1px solid #e2e8f0", fontSize: 12 }}
           formatter={(value) => [`${String(value)} employees`, "Count"]}
         />
         <Bar dataKey="employeeCount" radius={[0, 4, 4, 0]}>
           {data.map((_, i) => (
-            <Cell key={i} fill={i === 0 ? "#10b981" : "#a7f3d0"} />
+            <Cell key={i} fill={i === 0 ? "#3B84C4" : "#93c5fd"} />
           ))}
         </Bar>
       </BarChart>
