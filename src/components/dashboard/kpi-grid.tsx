@@ -14,8 +14,8 @@ export function KpiGrid({ stats }: KpiGridProps) {
         value={stats.totalEmployees}
         icon={Users}
         description="All non-terminated"
-        iconColor="text-emerald-600"
-        iconBg="bg-emerald-50"
+        iconColor="text-blue-600"
+        iconBg="bg-blue-50"
       />
       <KpiCard
         title="Active Employees"
