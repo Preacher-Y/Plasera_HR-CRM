@@ -12,7 +12,7 @@ import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { EmploymentHistoryFeed } from "@/components/employees/employment-history-feed";
 import { EmployeeLeaveList } from "@/components/employees/employee-leave-list";
 import { formatDate } from "@/lib/utils";
-import { Edit, UserMinus, Mail, Phone, MapPin, Briefcase, Building2, Calendar } from "lucide-react";
+import { Edit, UserMinus, Mail, Phone, MapPin, Briefcase, Building2, Calendar, ArrowLeft } from "lucide-react";
 
 interface Employee {
   id: string;
@@ -92,10 +92,14 @@ export function ProfileView({ employee: emp, onLeave }: ProfileViewProps) {
 
   return (
     <div className="space-y-6">
-      <PageHeader
-        title={`${emp.firstName} ${emp.lastName}`}
-        description={emp.employeeNumber}
-        actions={
+      <div className="flex items-center gap-3">
+        <Link href="/employees" className={buttonVariants({ variant: "ghost", size: "sm" })}>
+          <ArrowLeft className="h-4 w-4" />
+        </Link>
+        <PageHeader
+          title={`${emp.firstName} ${emp.lastName}`}
+          description={emp.employeeNumber}
+          actions={
           <div className="flex gap-2">
             <Link href={`/employees/${emp.id}/edit`} className={buttonVariants({ variant: "outline" })}>
               <Edit className="mr-2 h-4 w-4" />
@@ -110,6 +114,7 @@ export function ProfileView({ employee: emp, onLeave }: ProfileViewProps) {
           </div>
         }
       />
+      </div>
 
       <div className="rounded-xl border bg-white p-6 shadow-sm">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
