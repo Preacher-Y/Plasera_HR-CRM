@@ -1,16 +1,14 @@
 "use client";
 import { useEffect, useState, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { PageHeader } from "@/components/ui/page-header";
 import { EmptyState } from "@/components/ui/empty-state";
 import { TableSkeleton } from "@/components/ui/data-skeleton";
 import { LeaveTable } from "@/components/leave/leave-table";
 import { LeaveFilters } from "@/components/leave/leave-filters";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { CalendarDays, Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { LeavePageBanner } from "@/components/leave/leave-page-banner";
+import { CalendarDays } from "lucide-react";
 
 interface LeaveRequest {
   id: string;
@@ -61,19 +59,7 @@ export function LeaveContent() {
 
   return (
     <div className="space-y-6">
-      <PageHeader
-        title="Leave Requests"
-        description="Review and manage employee time-off requests"
-        actions={
-          <Link
-            href="/leave/new"
-            className={cn(buttonVariants(), "bg-emerald-600 hover:bg-emerald-700")}
-          >
-            <Plus className="mr-2 h-4 w-4" />
-            Submit Leave
-          </Link>
-        }
-      />
+      <LeavePageBanner />
 
       <LeaveFilters />
 
