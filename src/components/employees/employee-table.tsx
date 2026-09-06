@@ -24,20 +24,20 @@ export function EmployeeTable({ employees }: { employees: EmployeeRow[] }) {
       <table className="w-full text-sm">
         <thead>
           <tr className="border-b bg-slate-50 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-            <th className="px-4 py-3">Employee</th>
-            <th className="px-4 py-3 hidden md:table-cell">Job Title</th>
-            <th className="px-4 py-3 hidden lg:table-cell">Department</th>
-            <th className="px-4 py-3">Status</th>
-            <th className="px-4 py-3 hidden xl:table-cell">Location</th>
-            <th className="px-4 py-3 hidden xl:table-cell">Date Joined</th>
-            <th className="px-4 py-3 text-right">Action</th>
+            <th className="px-4 py-2.5">Employee</th>
+            <th className="px-4 py-2.5 hidden md:table-cell">Job Title</th>
+            <th className="px-4 py-2.5 hidden lg:table-cell">Department</th>
+            <th className="px-4 py-2.5">Status</th>
+            <th className="px-4 py-2.5 hidden xl:table-cell">Location</th>
+            <th className="px-4 py-2.5 hidden xl:table-cell">Date Joined</th>
+            <th className="px-4 py-2.5 w-12 text-center">Action</th>
           </tr>
         </thead>
         <tbody className="divide-y">
           {employees.map((emp) => {
             const onLeave = isCurrentlyOnLeave(emp.leaveRequests);
             return (
-              <tr key={emp.id} className="hover:bg-slate-50 transition-colors">
+              <tr key={emp.id} className="group hover:bg-slate-50 transition-colors">
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-3">
                     <EmployeeAvatar firstName={emp.firstName} lastName={emp.lastName} size="sm" />
@@ -58,11 +58,11 @@ export function EmployeeTable({ employees }: { employees: EmployeeRow[] }) {
                 <td className="px-4 py-3 text-slate-500 hidden xl:table-cell">
                   {formatDate(emp.dateJoined)}
                 </td>
-                <td className="px-4 py-3 text-right">
+                <td className="px-4 py-3 w-12 text-center">
                   <Link
                     href={`/employees/${emp.id}`}
                     aria-label={`View ${emp.firstName} ${emp.lastName}`}
-                    className={buttonVariants({ variant: "ghost", size: "sm" })}
+                    className={buttonVariants({ variant: "ghost", size: "sm" }) + " opacity-0 group-hover:opacity-100 transition-opacity duration-150"}
                   >
                     <Eye className="h-4 w-4" />
                   </Link>
