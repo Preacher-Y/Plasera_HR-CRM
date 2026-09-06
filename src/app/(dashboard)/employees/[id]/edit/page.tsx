@@ -1,7 +1,10 @@
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import { db } from "@/lib/db";
 import { PageHeader } from "@/components/ui/page-header";
 import { EmployeeForm } from "@/components/employees/employee-form";
+import { buttonVariants } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 
 export default async function EditEmployeePage({
   params,
@@ -26,7 +29,12 @@ export default async function EditEmployeePage({
 
   return (
     <div className="mx-auto max-w-2xl space-y-6">
-      <PageHeader title="Edit Employee" description={`${employee.firstName} ${employee.lastName}`} />
+      <div className="flex items-center gap-3">
+        <Link href={`/employees/${id}`} className={buttonVariants({ variant: "ghost", size: "sm" })}>
+          <ArrowLeft className="h-4 w-4" />
+        </Link>
+        <PageHeader title="Edit Employee" description={`${employee.firstName} ${employee.lastName}`} />
+      </div>
       <div className="rounded-xl border bg-white p-6 shadow-sm">
         <EmployeeForm
           departments={departments}
