@@ -7,7 +7,9 @@ import { toast } from "sonner";
 import { createLeaveSchema, CreateLeaveInput } from "@/lib/validations/leave";
 import { LEAVE_TYPE_LABELS } from "@/lib/constants";
 import { calculateLeaveDays } from "@/lib/utils";
+import Link from "next/link";
 import { PageHeader } from "@/components/ui/page-header";
+import { buttonVariants } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -26,7 +28,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Loader2, CalendarRange } from "lucide-react";
+import { Loader2, CalendarRange, ArrowLeft } from "lucide-react";
 
 export default function NewLeavePage() {
   const router = useRouter();
@@ -81,10 +83,15 @@ export default function NewLeavePage() {
 
   return (
     <div className="mx-auto max-w-xl space-y-6">
-      <PageHeader
-        title="Submit Leave Request"
-        description="Create a time-off request for an employee"
-      />
+      <div className="flex items-center gap-3">
+        <Link href="/leave" className={buttonVariants({ variant: "ghost", size: "sm" })}>
+          <ArrowLeft className="h-4 w-4" />
+        </Link>
+        <PageHeader
+          title="Submit Leave Request"
+          description="Create a time-off request for an employee"
+        />
+      </div>
 
       <div className="rounded-xl border bg-white p-6 shadow-sm">
         <Form {...form}>
