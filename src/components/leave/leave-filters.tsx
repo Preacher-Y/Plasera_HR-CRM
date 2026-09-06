@@ -30,7 +30,7 @@ export function LeaveFilters() {
   const hasFilters = searchParams.has("status") || searchParams.has("leaveType");
 
   return (
-    <div className="flex flex-wrap gap-3">
+    <div className="flex flex-wrap items-center gap-3">
       <div className="flex rounded-lg border bg-white p-1 gap-1">
         {(
           [
@@ -48,7 +48,7 @@ export function LeaveFilters() {
               className={cn(
                 "rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
                 active
-                  ? "bg-emerald-600 text-white"
+                  ? "bg-blue-600 text-white"
                   : "text-slate-600 hover:bg-slate-100"
               )}
             >
