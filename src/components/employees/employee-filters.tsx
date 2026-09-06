@@ -41,7 +41,7 @@ export function EmployeeFilters({ departments }: EmployeeFiltersProps) {
     searchParams.has("search") || searchParams.has("department") || searchParams.has("status");
 
   return (
-    <div className="flex flex-wrap items-center gap-3">
+    <div className="flex flex-wrap items-center gap-3 bg-white p-4 rounded-2xl">
       <div className="relative flex-1 min-w-48">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
         <Input
@@ -53,37 +53,39 @@ export function EmployeeFilters({ departments }: EmployeeFiltersProps) {
         />
       </div>
 
-      <Select
-        value={searchParams.get("department") ?? "all"}
-        onValueChange={(v) => updateParams({ department: v === "all" ? null : v })}
-      >
-        <SelectTrigger className="w-44" aria-label="Filter by department">
-          <SelectValue placeholder="All Departments" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">All Departments</SelectItem>
-          {departments.map((d) => (
-            <SelectItem key={d.id} value={d.name}>
-              {d.name}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      <div className="flex gap-2">
+        <Select
+          value={searchParams.get("department") ?? "all"}
+          onValueChange={(v) => updateParams({ department: v === "all" ? null : v })}
+        >
+          <SelectTrigger className="w-43" aria-label="Filter by department">
+            <SelectValue placeholder="All Departments" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Departments</SelectItem>
+            {departments.map((d) => (
+              <SelectItem key={d.id} value={d.name}>
+                {d.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
 
-      <Select
-        value={searchParams.get("status") ?? "all"}
-        onValueChange={(v) => updateParams({ status: v === "all" ? null : v })}
-      >
-        <SelectTrigger className="w-36" aria-label="Filter by status">
-          <SelectValue placeholder="All Statuses" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">All Statuses</SelectItem>
-          <SelectItem value="ACTIVE">Active</SelectItem>
-          <SelectItem value="INACTIVE">Inactive</SelectItem>
-          <SelectItem value="TERMINATED">Terminated</SelectItem>
-        </SelectContent>
-      </Select>
+        <Select
+          value={searchParams.get("status") ?? "all"}
+          onValueChange={(v) => updateParams({ status: v === "all" ? null : v })}
+        >
+          <SelectTrigger className="w-42" aria-label="Filter by status">
+            <SelectValue placeholder="All Statuses" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Statuses</SelectItem>
+            <SelectItem value="ACTIVE">Active</SelectItem>
+            <SelectItem value="INACTIVE">Inactive</SelectItem>
+            <SelectItem value="TERMINATED">Terminated</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
 
       {hasFilters && (
         <Button
@@ -93,6 +95,7 @@ export function EmployeeFilters({ departments }: EmployeeFiltersProps) {
             setSearch("");
             router.push(pathname);
           }}
+          className={"hover:text-red-600"}
         >
           <X className="mr-1 h-3 w-3" /> Clear
         </Button>
