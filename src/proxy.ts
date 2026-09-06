@@ -11,8 +11,8 @@ export async function proxy(req: NextRequest) {
     return NextResponse.redirect(new URL("/dashboard", req.url));
   }
 
-  // Unauthenticated users are sent to /login
-  if (!session) {
+  // Unauthenticated users are sent to /login (skip if already there)
+  if (!session && pathname !== "/login") {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 
@@ -21,6 +21,6 @@ export async function proxy(req: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!login|api|_next/static|_next/image|favicon\\.ico).*)",
+    "/((?!api|_next/static|_next/image|favicon\\.ico).*)",
   ],
 };
