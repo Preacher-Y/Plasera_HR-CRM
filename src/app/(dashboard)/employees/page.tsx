@@ -3,15 +3,14 @@ import { Suspense } from "react";
 import { db } from "@/lib/db";
 import { getEmployees } from "@/lib/services/employee.service";
 import { employeeQuerySchema } from "@/lib/validations/employee";
-import { PageHeader } from "@/components/ui/page-header";
 import { EmptyState } from "@/components/ui/empty-state";
 import { TableSkeleton } from "@/components/ui/data-skeleton";
 import { EmployeeFilters } from "@/components/employees/employee-filters";
 import { EmployeeTable } from "@/components/employees/employee-table";
 import { EmployeeCard } from "@/components/employees/employee-card";
+import { EmployeePageBanner } from "@/components/employees/employee-page-banner";
 import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { Plus, Users } from "lucide-react";
+import { Users } from "lucide-react";
 
 interface PageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -44,7 +43,7 @@ async function EmployeeList({ searchParams }: PageProps) {
   const end   = Math.min(page * limit, total);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 max-md:mb-10">
       <div className="hidden md:block">
         <EmployeeTable employees={employees} />
       </div>
@@ -91,19 +90,7 @@ export default async function EmployeesPage({ searchParams }: PageProps) {
 
   return (
     <div className="space-y-6">
-      <PageHeader
-        title="Employees"
-        description="Manage your organization's workforce"
-        actions={
-          <Link
-            href="/employees/new"
-            className={cn(buttonVariants(), "bg-emerald-600 hover:bg-emerald-700")}
-          >
-            <Plus className="mr-2 h-4 w-4" />
-            Add Employee
-          </Link>
-        }
-      />
+      <EmployeePageBanner />
       <Suspense fallback={<div className="h-9 rounded-lg bg-slate-100 animate-pulse w-full" />}>
         <EmployeeFilters departments={departments} />
       </Suspense>
