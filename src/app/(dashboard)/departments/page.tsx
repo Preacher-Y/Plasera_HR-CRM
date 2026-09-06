@@ -3,14 +3,14 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { PageHeader } from "@/components/ui/page-header";
 import { EmptyState } from "@/components/ui/empty-state";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { EmployeeAvatar } from "@/components/ui/employee-avatar";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { TableSkeleton } from "@/components/ui/data-skeleton";
-import { Building2, Plus, Pencil, Trash2, Users } from "lucide-react";
+import { DepartmentPageBanner } from "@/components/departments/department-page-banner";
+import { Building2, Pencil, Trash2, Users } from "lucide-react";
 
 interface Department {
   id: string;
@@ -60,20 +60,8 @@ export default function DepartmentsPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <PageHeader
-        title="Departments"
-        description="Organize your workforce into teams"
-        actions={
-          <Link
-            href="/departments/new"
-            className={cn(buttonVariants(), "bg-emerald-600 hover:bg-emerald-700")}
-          >
-            <Plus className="mr-2 h-4 w-4" />
-            New Department
-          </Link>
-        }
-      />
+    <div className="space-y-6 max-md:mb-10">
+      <DepartmentPageBanner />
 
       {loading ? (
         <TableSkeleton rows={6} cols={3} />
