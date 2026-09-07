@@ -82,68 +82,86 @@ export default function NewLeavePage() {
   }
 
   return (
-    <div className="mx-auto max-w-xl space-y-6">
-      <div className="flex items-center gap-3">
+    <div className="space-y-6">
+      <div className="flex items-center gap-3 w-full">
         <Link href="/leave" className={buttonVariants({ variant: "ghost", size: "sm" })}>
           <ArrowLeft className="h-4 w-4" />
+          <span className="hover:underline underline-offset-2 font-asul text-[14px]">
+            Back to Leaves
+          </span>
         </Link>
+      </div>
+      <div className="w-full justify-items-center text-center -mt-2 lg:-mt-10">
         <PageHeader
           title="Submit Leave Request"
           description="Create a time-off request for an employee"
         />
       </div>
 
-      <div className="rounded-xl border bg-white p-6 shadow-sm">
+      <div className="rounded-xl border bg-white p-6 shadow-sm mx-auto max-w-xl">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
             <FormField
               control={form.control}
               name="employeeId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Employee *</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select employee" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {employees.map((e) => (
-                        <SelectItem key={e.id} value={e.id}>
-                          {e.firstName} {e.lastName}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
+              render={({ field }) => {
+                const emp = employees.find(e => e.id === field.value);
+                const label = emp ? `${emp.firstName} ${emp.lastName}` : null;
+                return (
+                  <FormItem>
+                    <FormLabel>Employee *</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          {label
+                            ? <span className="flex flex-1 text-sm text-left">{label}</span>
+                            : <span className="flex flex-1 text-sm text-left text-muted-foreground">Select employee</span>
+                          }
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {employees.map((e) => (
+                          <SelectItem key={e.id} value={e.id}>
+                            {e.firstName} {e.lastName}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
             />
 
             <FormField
               control={form.control}
               name="leaveType"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Leave Type *</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select type" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {Object.entries(LEAVE_TYPE_LABELS).map(([value, label]) => (
-                        <SelectItem key={value} value={value}>
-                          {label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
+              render={({ field }) => {
+                const label = field.value ? LEAVE_TYPE_LABELS[field.value as keyof typeof LEAVE_TYPE_LABELS] : null;
+                return (
+                  <FormItem>
+                    <FormLabel>Leave Type *</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          {label
+                            ? <span className="flex flex-1 text-sm text-left">{label}</span>
+                            : <span className="flex flex-1 text-sm text-left text-muted-foreground">Select type</span>
+                          }
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {Object.entries(LEAVE_TYPE_LABELS).map(([value, label]) => (
+                          <SelectItem key={value} value={value}>
+                            {label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
             />
 
             <div className="grid grid-cols-2 gap-4">
