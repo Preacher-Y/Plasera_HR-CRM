@@ -35,27 +35,27 @@ export function Sidebar() {
       className={cn(
         "flex flex-col bg-login-button-hover overflow-hidden",
         // Mobile/tablet: absolute so it doesn't affect content width
-        "absolute inset-y-0 left-0 z-20 w-[240px] h-full",
-        "transition-transform duration-300 ease-in-out",
+        "absolute inset-y-0 left-0 z-20 w-60 h-full",
+        "transition-all duration-500 ease-in-out",
         mobileOpen ? "translate-x-0" : "-translate-x-full",
         // Desktop: back in flex flow, width-based collapse, no translation
-        "lg:relative lg:translate-x-0 lg:transition-[width]",
-        collapsed ? "lg:w-16" : "lg:w-[240px]",
+        "lg:relative lg:translate-x-0 lg:transition-all",
+        collapsed ? "lg:w-16 px-0" : "lg:w-60 px-2",
       )}
     >
       {/* Logo */}
       <div
         className={cn(
-          "flex h-16 items-center border-b border-white/15 shrink-0",
-          collapsed ? "lg:justify-center lg:px-0 px-5 gap-3" : "gap-3 px-5"
+          "flex h-18 items-center border-b border-white/15 shrink-0 transition-all duration-500",
+          collapsed ? "lg:px-3.5 gap-3" : "gap-3 px-5"
         )}
       >
-        <HrmLogo className="h-[18px] w-auto shrink-0" />
+        <HrmLogo className={cn("w-auto shrink-0", collapsed?"h-5":"h-4.5")} />
         <div
           className={cn(
-            "flex flex-col leading-tight whitespace-nowrap transition-[opacity] duration-200",
+            "flex flex-col leading-tight whitespace-nowrap transition-all duration-500",
             collapsed
-              ? "lg:opacity-0 lg:pointer-events-none lg:w-0 lg:overflow-hidden opacity-100"
+              ? "lg:pointer-events-none lg:truncate opacity-100"
               : "opacity-100"
           )}
         >
@@ -70,7 +70,7 @@ export function Sidebar() {
 
       {/* Nav — centered vertically, no scroll */}
       <nav
-        className="flex-1 flex flex-col justify-center overflow-hidden px-2 py-4 space-y-0.5"
+        className="flex-1 flex flex-col justify-center overflow-hidden px-2 py-4 space-y-2 transition-all duration-500"
         aria-label="Main navigation"
       >
         {navItems.map(({ href, label, icon: Icon }) => {
@@ -82,18 +82,18 @@ export function Sidebar() {
               title={collapsed ? label : undefined}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium font-montserrat transition-colors",
+                "flex items-center gap-3 px-3 rounded-t-sm py-4 text-sm font-montserrat transition-all",
                 active
-                  ? "bg-login-panel text-white"
-                  : "text-blue-100 hover:bg-login-button hover:text-white"
+                  ? "border-b-2 bg-login-panel/30 text-white font-semibold tracking-wider"
+                  : "text-blue-100/80 hover:bg-login-panel/40 hover:text-white"
               )}
             >
-              <Icon className="h-4 w-4 shrink-0" />
+              <Icon className="h-6 w-6 shrink-0" />
               <span
                 className={cn(
-                  "whitespace-nowrap transition-[opacity] duration-200",
+                  "whitespace-nowrap transition-all duration-500",
                   collapsed
-                    ? "lg:opacity-0 lg:pointer-events-none lg:w-0 lg:overflow-hidden opacity-100"
+                    ? "lg:pointer-events-none lg:truncate opacity-100"
                     : "opacity-100"
                 )}
               >
@@ -105,18 +105,18 @@ export function Sidebar() {
       </nav>
 
       {/* Logout at bottom */}
-      <div className="shrink-0 border-t border-white/15 px-2 py-4">
+      <div className="shrink-0 border-t border-white/15 px-2 py-4 transition-all duration-500">
         <button
           onClick={handleSignOut}
           title={collapsed ? "Logout" : undefined}
-          className="w-full flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium font-montserrat text-blue-100 hover:bg-login-button hover:text-white transition-colors"
+          className="w-full flex items-center gap-3 rounded-sm px-3 py-4 text-sm  font-montserrat text-blue-100 hover:bg-login-button/40 hover:text-white transition-colors"
         >
-          <LogOut className="h-4 w-4 shrink-0" />
+          <LogOut className="h-6 w-6 shrink-0" />
           <span
             className={cn(
-              "whitespace-nowrap transition-[opacity] duration-200",
+              "whitespace-nowrap transition-all duration-500",
               collapsed
-                ? "lg:opacity-0 lg:pointer-events-none lg:w-0 lg:overflow-hidden opacity-100"
+                ? "lg:pointer-events-none lg:truncate opacity-100"
                 : "opacity-100"
             )}
           >
