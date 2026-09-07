@@ -53,7 +53,7 @@ export function EmployeeFilters({ departments }: EmployeeFiltersProps) {
         />
       </div>
 
-      <div className="flex gap-3 w-full max-md:flex-1">
+      <div className="flex gap-3 w-full lg:flex-1">
         <div className="flex-1">
           <Select
             value={searchParams.get("department") ?? "all"}
