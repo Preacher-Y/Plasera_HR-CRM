@@ -194,7 +194,7 @@ export default function NewLeavePage() {
             </div>
 
             {duration !== null && (
-              <div className="flex items-center gap-2 rounded-lg bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
+              <div className="flex items-center gap-2 rounded-lg bg-blue-50 px-3 py-2 text-sm text-login-button font-montserrat">
                 <CalendarRange className="h-4 w-4" />
                 <span>
                   {duration} calendar {duration === 1 ? "day" : "days"}
