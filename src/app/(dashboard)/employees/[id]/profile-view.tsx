@@ -156,7 +156,7 @@ export function ProfileView({ employee: emp, onLeave }: ProfileViewProps) {
       </div>
 
       <Tabs defaultValue="overview">
-        <TabsList className="bg-white border">
+        <TabsList className="bg-white border rounded-xl shadow-sm">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="leave">Leave</TabsTrigger>
           <TabsTrigger value="history">History</TabsTrigger>
