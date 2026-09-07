@@ -48,7 +48,7 @@ export default async function DepartmentDetailPage({
 
       {isEditing ? (
         <div className="rounded-xl border bg-white p-6 shadow-sm mx-auto max-w-xl">
-          <h2 className="mb-4 font-semibold text-slate-800">Edit Department</h2>
+          <h2 className="mb-4 font-semibold text-gray-900 font-asul">Edit Department</h2>
           <DepartmentForm
             employees={employees}
             departmentId={id}
@@ -105,7 +105,7 @@ export default async function DepartmentDetailPage({
           <div className="rounded-xl border bg-white p-6 shadow-sm lg:col-span-2">
             <div className="mb-4 flex items-center gap-2">
               <Users className="h-4 w-4 text-slate-400" />
-              <h2 className="text-sm font-semibold text-slate-700">
+              <h2 className="text-sm font-semibold text-gray-700 font-montserrat">
                 Employees ({department._count.employees})
               </h2>
             </div>
@@ -126,7 +126,7 @@ export default async function DepartmentDetailPage({
                     <div className="min-w-0 flex-1">
                       <Link
                         href={`/employees/${emp.id}`}
-                        className="text-sm font-medium text-slate-800 hover:text-emerald-600"
+                        className="text-sm font-medium text-slate-800 hover:text-login-panel transition-colors"
                       >
                         {emp.firstName} {emp.lastName}
                       </Link>
