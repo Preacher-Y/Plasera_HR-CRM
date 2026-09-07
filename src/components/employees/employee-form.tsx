@@ -175,53 +175,69 @@ export function EmployeeForm({
           <FormField
             control={form.control}
             name="departmentId"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Department *</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select department" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {departments.map((d) => (
-                      <SelectItem key={d.id} value={d.id}>
-                        {d.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
+            render={({ field }) => {
+              const label = departments.find(d => d.id === field.value)?.name;
+              return (
+                <FormItem>
+                  <FormLabel>Department *</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        {label
+                          ? <span className="flex flex-1 text-sm text-left">{label}</span>
+                          : <span className="flex flex-1 text-sm text-left text-muted-foreground">Select department</span>
+                        }
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {departments.map((d) => (
+                        <SelectItem key={d.id} value={d.id}>
+                          {d.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
           />
           <FormField
             control={form.control}
             name="managerId"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Manager</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="No manager" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="">No manager</SelectItem>
-                    {managers
-                      .filter((m) => m.id !== employeeId)
-                      .map((m) => (
-                        <SelectItem key={m.id} value={m.id}>
-                          {m.firstName} {m.lastName}
-                        </SelectItem>
-                      ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
+            render={({ field }) => {
+              const manager = managers.find(m => m.id === field.value);
+              const label = manager ? `${manager.firstName} ${manager.lastName}` : null;
+              return (
+                <FormItem>
+                  <FormLabel>Manager</FormLabel>
+                  <Select
+                    onValueChange={(v) => field.onChange(v === "_none" ? "" : v)}
+                    value={field.value || "_none"}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        {label
+                          ? <span className="flex flex-1 text-sm text-left">{label}</span>
+                          : <span className="flex flex-1 text-sm text-left text-muted-foreground">No manager</span>
+                        }
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="_none">No manager</SelectItem>
+                      {managers
+                        .filter((m) => m.id !== employeeId)
+                        .map((m) => (
+                          <SelectItem key={m.id} value={m.id}>
+                            {m.firstName} {m.lastName}
+                          </SelectItem>
+                        ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
           />
         </div>
 
@@ -245,7 +261,7 @@ export function EmployeeForm({
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Status</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue />
