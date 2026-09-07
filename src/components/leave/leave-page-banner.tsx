@@ -35,6 +35,7 @@ export function LeavePageBanner() {
           fill
           className="object-contain object-right-bottom"
           priority
+          loading="eager"
         />
       </div>
     </div>

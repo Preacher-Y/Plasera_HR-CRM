@@ -34,6 +34,7 @@ export function DepartmentPageBanner() {
           alt=""
           fill
           className="object-contain object-right-bottom"
+          loading="eager"
           priority
         />
       </div>

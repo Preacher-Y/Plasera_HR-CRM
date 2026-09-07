@@ -29,6 +29,7 @@ export function WelcomeBanner({ name }: WelcomeBannerProps) {
           alt=""
           fill
           className="object-contain object-right-bottom"
+          loading="eager"
           priority
         />
       </div>
