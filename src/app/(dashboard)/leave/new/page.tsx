@@ -226,7 +226,7 @@ export default function NewLeavePage() {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="bg-emerald-600 hover:bg-emerald-700"
+                className="rounded-lg bg-login-button hover:bg-login-button-hover"
               >
                 {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Submit Request
