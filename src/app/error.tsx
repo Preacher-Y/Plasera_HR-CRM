@@ -1,6 +1,6 @@
 "use client";
 import { useEffect } from "react";
-import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 export default function GlobalError({
   error,
@@ -14,15 +14,29 @@ export default function GlobalError({
   }, [error]);
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-4 text-center px-4">
-      <p className="text-5xl">⚠️</p>
-      <h1 className="text-2xl font-bold text-slate-900">Something went wrong</h1>
-      <p className="text-slate-500 max-w-sm">
+    <div className="min-h-screen bg-white flex flex-col items-center justify-center px-6 py-16 text-center">
+      <div className="w-full max-w-md lg:max-w-lg xl:max-w-xl mb-8 lg:mb-10">
+        <Image
+          src="/internalServerErrorIllustration.svg"
+          alt="Internal server error illustration"
+          width={5718}
+          height={3642}
+          priority
+          style={{ width: "100%", height: "auto" }}
+        />
+      </div>
+      <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 leading-tight font-asul">
+        Something went wrong
+      </h1>
+      <p className="mt-4 text-gray-400 text-sm lg:text-base max-w-sm font-montserrat">
         An unexpected error occurred. Please try again.
       </p>
-      <Button onClick={reset} className="bg-emerald-600 hover:bg-emerald-700">
+      <button
+        onClick={reset}
+        className="mt-8 inline-flex items-center justify-center px-8 py-3 rounded-full text-white text-sm lg:text-base font-semibold bg-login-button hover:bg-login-button-hover transition-colors font-montserrat"
+      >
         Try again
-      </Button>
+      </button>
     </div>
   );
 }
