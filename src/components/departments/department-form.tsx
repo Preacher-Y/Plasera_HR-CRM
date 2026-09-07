@@ -115,34 +115,44 @@ export function DepartmentForm({
         <FormField
           control={form.control}
           name="headId"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Department Head</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="No head assigned" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="">No head assigned</SelectItem>
-                  {employees.map((e) => (
-                    <SelectItem key={e.id} value={e.id}>
-                      {e.firstName} {e.lastName} — {e.jobTitle}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
+          render={({ field }) => {
+            const head = employees.find(e => e.id === field.value);
+            const label = head ? `${head.firstName} ${head.lastName}` : null;
+            return (
+              <FormItem>
+                <FormLabel>Department Head</FormLabel>
+                <Select
+                  onValueChange={(v) => field.onChange(v === "_none" ? "" : v)}
+                  value={field.value || "_none"}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      {label
+                        ? <span className="flex flex-1 text-sm text-left">{label}</span>
+                        : <span className="flex flex-1 text-sm text-left text-muted-foreground">No head assigned</span>
+                      }
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="_none">No head assigned</SelectItem>
+                    {employees.map((e) => (
+                      <SelectItem key={e.id} value={e.id}>
+                        {e.firstName} {e.lastName} — {e.jobTitle}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            );
+          }}
         />
 
         <div className="flex gap-3 pt-2">
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="bg-emerald-600 hover:bg-emerald-700"
+            className="rounded-lg bg-login-button hover:bg-login-button-hover"
           >
             {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {mode === "create" ? "Create Department" : "Save Changes"}
