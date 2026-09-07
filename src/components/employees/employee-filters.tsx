@@ -42,7 +42,7 @@ export function EmployeeFilters({ departments }: EmployeeFiltersProps) {
 
   return (
     <div className="flex flex-wrap items-center gap-3 bg-white p-4 rounded-2xl">
-      <div className="relative flex-1 min-w-48">
+      <div className="relative flex-1 min-w-48 w-full">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
         <Input
           placeholder="Search employees..."
@@ -53,8 +53,8 @@ export function EmployeeFilters({ departments }: EmployeeFiltersProps) {
         />
       </div>
 
-      <div className="flex gap-3 flex-1">
-        <div className="flex-1 w-full">
+      <div className="flex gap-3 w-full max-md:flex-1">
+        <div className="flex-1">
           <Select
             value={searchParams.get("department") ?? "all"}
             onValueChange={(v) => updateParams({ department: v === "all" ? null : v })}
@@ -73,7 +73,7 @@ export function EmployeeFilters({ departments }: EmployeeFiltersProps) {
           </Select>
         </div>
 
-        <div className="flex-1 w-full">
+        <div className="flex-1">
           <Select
             value={searchParams.get("status") ?? "all"}
             onValueChange={(v) => updateParams({ status: v === "all" ? null : v })}
