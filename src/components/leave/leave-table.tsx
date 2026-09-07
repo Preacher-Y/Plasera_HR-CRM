@@ -50,7 +50,7 @@ export function LeaveTable({ leaveRequests, onAction }: LeaveTableProps) {
                   <div className="min-w-0">
                     <Link
                       href={`/employees/${leave.employee.id}`}
-                      className="font-medium text-slate-900 hover:text-emerald-600 truncate block"
+                      className="font-medium text-slate-900 hover:text-login-panel transition-colors truncate block"
                     >
                       {leave.employee.firstName} {leave.employee.lastName}
                     </Link>
