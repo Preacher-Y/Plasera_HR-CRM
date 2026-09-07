@@ -125,7 +125,7 @@ export function ProfileView({ employee: emp, onLeave }: ProfileViewProps) {
           />
           <div className="flex-1 space-y-2">
             <div className="flex flex-wrap items-center gap-2">
-              <h2 className="text-xl font-bold text-slate-900">
+              <h2 className="text-xl font-bold text-gray-900 font-asul">
                 {emp.firstName} {emp.lastName}
               </h2>
               <StatusBadge variant={employmentStatusToVariant(emp.employmentStatus, onLeave)} />
@@ -182,14 +182,14 @@ export function ProfileView({ employee: emp, onLeave }: ProfileViewProps) {
 
         <TabsContent value="leave">
           <div className="rounded-xl border bg-white p-6 shadow-sm">
-            <h3 className="mb-4 text-sm font-semibold text-slate-700">Leave Requests</h3>
+            <h3 className="mb-4 text-sm font-semibold text-gray-700 font-montserrat">Leave Requests</h3>
             <EmployeeLeaveList leaveRequests={emp.leaveRequests} />
           </div>
         </TabsContent>
 
         <TabsContent value="history">
           <div className="rounded-xl border bg-white p-6 shadow-sm">
-            <h3 className="mb-6 text-sm font-semibold text-slate-700">Employment History</h3>
+            <h3 className="mb-6 text-sm font-semibold text-gray-700 font-montserrat">Employment History</h3>
             <EmploymentHistoryFeed history={emp.history} />
           </div>
         </TabsContent>
