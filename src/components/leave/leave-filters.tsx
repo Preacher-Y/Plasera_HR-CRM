@@ -48,7 +48,7 @@ export function LeaveFilters() {
               className={cn(
                 "rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
                 active
-                  ? "bg-blue-600 text-white"
+                  ? "bg-login-button text-white"
                   : "text-slate-600 hover:bg-slate-100"
               )}
             >
