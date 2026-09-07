@@ -53,38 +53,42 @@ export function EmployeeFilters({ departments }: EmployeeFiltersProps) {
         />
       </div>
 
-      <div className="flex gap-2">
-        <Select
-          value={searchParams.get("department") ?? "all"}
-          onValueChange={(v) => updateParams({ department: v === "all" ? null : v })}
-        >
-          <SelectTrigger className="w-43" aria-label="Filter by department">
-            <SelectValue placeholder="All Departments" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Departments</SelectItem>
-            {departments.map((d) => (
-              <SelectItem key={d.id} value={d.name}>
-                {d.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+      <div className="flex gap-3 w-full flex-1">
+        <div className="flex-1 w-full">
+          <Select
+            value={searchParams.get("department") ?? "all"}
+            onValueChange={(v) => updateParams({ department: v === "all" ? null : v })}
+          >
+            <SelectTrigger aria-label="Filter by department">
+              <SelectValue placeholder="All Departments" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Departments</SelectItem>
+              {departments.map((d) => (
+                <SelectItem key={d.id} value={d.name}>
+                  {d.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
-        <Select
-          value={searchParams.get("status") ?? "all"}
-          onValueChange={(v) => updateParams({ status: v === "all" ? null : v })}
-        >
-          <SelectTrigger className="w-42" aria-label="Filter by status">
-            <SelectValue placeholder="All Statuses" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Statuses</SelectItem>
-            <SelectItem value="ACTIVE">Active</SelectItem>
-            <SelectItem value="INACTIVE">Inactive</SelectItem>
-            <SelectItem value="TERMINATED">Terminated</SelectItem>
-          </SelectContent>
-        </Select>
+        <div className="flex-1 w-full">
+          <Select
+            value={searchParams.get("status") ?? "all"}
+            onValueChange={(v) => updateParams({ status: v === "all" ? null : v })}
+          >
+            <SelectTrigger aria-label="Filter by status">
+              <SelectValue placeholder="All Statuses" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Statuses</SelectItem>
+              <SelectItem value="ACTIVE">Active</SelectItem>
+              <SelectItem value="INACTIVE">Inactive</SelectItem>
+              <SelectItem value="TERMINATED">Terminated</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
       {hasFilters && (
