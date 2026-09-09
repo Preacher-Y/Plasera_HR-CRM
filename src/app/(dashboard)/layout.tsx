@@ -20,11 +20,11 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
   return (
     <SidebarProvider>
-      <div className="relative flex h-screen overflow-x-hidden bg-login-button-hover">
+      <div className="relative flex h-screen overflow-x-hidden bg-login-button-hover transition-all duration-500">
         <Sidebar />
         <ContentWrapper>
           <Header userName={userName} />
-          <main id="main-content" className="flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6 lg:py-8 lg:px-20">
+          <main id="main-content" className="flex-1 overflow-y-auto overflow-x-hidden p-4 transition-all duration-500 sm:p-6 lg:py-8 lg:px-20">
             {children}
           </main>
         </ContentWrapper>
