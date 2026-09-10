@@ -16,6 +16,11 @@ export async function proxy(req: NextRequest) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 
+  // Non-admin authenticated users cannot access the portal
+  if (session && session.role !== "ADMIN" && pathname !== "/unauthorized") {
+    return NextResponse.redirect(new URL("/unauthorized", req.url));
+  }
+
   return NextResponse.next();
 }
 

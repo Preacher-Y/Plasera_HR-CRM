@@ -148,11 +148,13 @@ async function main() {
   const pepper = process.env.BCRYPT_PEPPER ?? "";
   const hashedPassword = await bcrypt.hash("ChangeMe123!" + pepper, 10);
   for (const emp of employees) {
+    const isAdmin = emp.email === "alice.johnson@peoplecore.io";
     await prisma.user.create({
       data: {
         email:    emp.email,
         password: hashedPassword,
         name:     `${emp.firstName} ${emp.lastName}`,
+        role:     isAdmin ? "ADMIN" : "VIEWER",
       },
     });
   }
